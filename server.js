@@ -12,7 +12,14 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD, 
     port: process.env.DB_PORT, 
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false, // Required for Neon
+    },
 });
+pool.connect()
+  .then(() => console.log("✅ Connected to database!"))
+  .catch(err => console.error("❌ Database connection error:", err));
 
 app.use(cors());
 app.use(express.json());
